@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://odkwxubujcx6"]
+
+[ext_resource type="Texture2D" uid="uid://bhiskru4df6yy" path="res://assets/platformer_tiles.png" id="1_wqjoi"]
+[ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_fhpft"]
+[ext_resource type="Script" path="res://src/fsm/fsm_state.gd" id="3_qgjeo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x5k21"]
+size = Vector2(10, 12)
+
+[node name="Player" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_x5k21")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_wqjoi")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="States" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_fhpft")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("3_qgjeo")
+
+[node name="Run" type="Node" parent="States"]
+script = ExtResource("3_qgjeo")
