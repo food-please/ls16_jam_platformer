@@ -1,0 +1,13 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://4us728o7keaj"]
+
+[ext_resource type="Texture2D" uid="uid://cfhrchesumebb" path="res://assets/tiles/brick_tileset.png" id="1_yq0ci"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mphc2"]
+texture = ExtResource("1_yq0ci")
+6:1/0 = 0
+
+[resource]
+terrain_set_0/mode = 1
+terrain_set_0/terrain_0/name = "Bricks"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/1 = SubResource("TileSetAtlasSource_mphc2")

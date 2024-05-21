@@ -19,12 +19,10 @@ func _ready() -> void:
 
 
 
-# Note: NOT built-in methods. Only one will be run at a time: the active state.
 func _unhandled_input(_event: InputEvent) -> void:
 	return
 
 
-# Note: NOT built-in methods. Only one will be run at a time: the active state.
 func _physics_process(_delta: float) -> void:
 	return
 

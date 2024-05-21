@@ -1,30 +1,55 @@
-[gd_scene load_steps=5 format=3 uid="uid://odkwxubujcx6"]
+[gd_scene load_steps=11 format=3 uid="uid://odkwxubujcx6"]
 
-[ext_resource type="Texture2D" uid="uid://bhiskru4df6yy" path="res://assets/platformer_tiles.png" id="1_wqjoi"]
+[ext_resource type="Script" path="res://src/player/player.gd" id="1_yejvu"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_fhpft"]
-[ext_resource type="Script" path="res://src/fsm/fsm_state.gd" id="3_qgjeo"]
+[ext_resource type="Script" path="res://src/player/input/move.gd" id="3_du6hi"]
+[ext_resource type="Script" path="res://src/player/input/idle.gd" id="5_kgut2"]
+[ext_resource type="Script" path="res://src/player/input/dash.gd" id="6_if4cw"]
+[ext_resource type="Script" path="res://src/player/input/run.gd" id="6_v5xf6"]
+[ext_resource type="Script" path="res://src/player/input/air.gd" id="8_n05mw"]
+[ext_resource type="Script" path="res://src/player/input/wall.gd" id="8_ytelw"]
+[ext_resource type="PackedScene" uid="uid://c38s6bekms3g4" path="res://src/player/character_gfx.tscn" id="9_g5w1w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x5k21"]
 size = Vector2(10, 12)
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 774
+script = ExtResource("1_yejvu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_x5k21")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -8)
-texture = ExtResource("1_wqjoi")
-region_enabled = true
-region_rect = Rect2(32, 0, 16, 16)
-
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_fhpft")
-initial_state = NodePath("Idle")
+initial_state = NodePath("Move/Idle")
 
-[node name="Idle" type="Node" parent="States"]
-script = ExtResource("3_qgjeo")
+[node name="Move" type="Node" parent="States"]
+script = ExtResource("3_du6hi")
 
-[node name="Run" type="Node" parent="States"]
-script = ExtResource("3_qgjeo")
+[node name="Idle" type="Node" parent="States/Move"]
+script = ExtResource("5_kgut2")
+
+[node name="Run" type="Node" parent="States/Move"]
+script = ExtResource("6_v5xf6")
+
+[node name="Dash" type="Node" parent="States/Move"]
+script = ExtResource("6_if4cw")
+
+[node name="Timer" type="Timer" parent="States/Move/Dash"]
+wait_time = 0.4
+one_shot = true
+
+[node name="Air" type="Node" parent="States/Move"]
+script = ExtResource("8_n05mw")
+acceleration_x = 160.0
+
+[node name="InputDelayTimer" type="Timer" parent="States/Move/Air"]
+
+[node name="Wall" type="Node" parent="States/Move"]
+script = ExtResource("8_ytelw")
+friction_factor = 1.0
+jump_strength = Vector2(160, 150)
+
+[node name="GFX" parent="." instance=ExtResource("9_g5w1w")]
