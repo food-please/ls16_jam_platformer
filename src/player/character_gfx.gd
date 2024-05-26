@@ -1,6 +1,6 @@
-class_name CharacterGFX extends Node2D
+class_name CharacterGFX extends CollisionShape2D
 
-enum Facing { LEFT, RIGHT }
+enum Facing { LEFT=1, RIGHT=-1 }
 
 signal animation_finished(animation_name: StringName)
 

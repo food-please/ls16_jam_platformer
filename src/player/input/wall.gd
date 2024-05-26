@@ -13,8 +13,10 @@ var _velocity: = Vector2.ZERO
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("jump"):
-		_jump()
+	move_state.unhandled_input(event)
+	#if event.is_action_pressed("jump"):
+		#if move_state.player.can_wall_jump():
+			#_jump()
 
 
 func _physics_process(delta: float) -> void:
@@ -29,6 +31,7 @@ func _physics_process(delta: float) -> void:
 		pass # COllision
 	
 	if player.is_on_floor():
+		print("Goto floor")
 		_fsm.swap("Move/Idle")
 	else:
 		var move_dir: = PlayerMoveState.get_move_direction().x
@@ -36,6 +39,9 @@ func _physics_process(delta: float) -> void:
 			= sign(move_dir) == sign(_wall_normal) or is_equal_approx(move_dir, 0.0)
 		if is_moving_away_from_wall or not player.is_on_wall():
 			_fsm.swap("Move/Air", { velocity = player.velocity })
+		#if not player.is_on_wall():
+			#print ("Goto air")
+			#_fsm.swap("Move/Air", { velocity = player.velocity })
 
 # Initialize the state. E.g. change the animation.
 func enter(data: = {}) -> void:
@@ -44,6 +50,7 @@ func enter(data: = {}) -> void:
 	_wall_normal = data.normal
 	_velocity.y = clamp(data.velocity.y, -max_slide_speed, max_slide_speed)
 	
+	print("Entering wall")
 	move_state.player.gfx.play("wall_slide")
 
 

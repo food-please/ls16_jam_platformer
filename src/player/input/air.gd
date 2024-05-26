@@ -64,3 +64,12 @@ func _calculate_jump_velocity(impulse: = 0.0) -> Vector2:
 		1.0,
 		Vector2.UP
 	)
+
+
+func _jump() -> void:
+	var impulse: = Vector2(move_state.player.scale.x, -1.0) * Vector2(160, 150)
+	var data: = {
+		velocity = impulse,
+		wall_jump = true
+	}
+	_fsm.swap("Move/Air", data)

@@ -15,12 +15,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not is_equal_approx(PlayerMoveState.get_move_direction().x - move_direction.x, 0.0):
+	if not is_equal_approx(PlayerMoveState.get_move_direction().x - move_direction.x, 0.0) \
+			or move_state.player.is_on_wall():
 		_fsm.swap("Move/Run")
 		return
 	
-	if not move_state.player.is_on_floor():
-		_fsm.swap("Move/Air", {})
 	move_state.physics_process(delta)
 
 
@@ -34,7 +33,7 @@ func enter(data: = {}) -> void:
 	
 	move_state.max_speed.x = max_speed_x
 	move_state.player.velocity += _calculate_dash_velocity()
-	move_state.player.gfx.play("air_jump")
+	move_state.player.gfx.play("dash")
 	
 	if not dash_timer.timeout.is_connected(_on_dash_timer_timeout):
 		dash_timer.timeout.connect(_on_dash_timer_timeout)

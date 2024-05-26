@@ -4,6 +4,7 @@ class_name PlayerMoveState extends FSMState
 @export var max_speed_default: = Vector2(96.0, 300.0)
 @export var acceleration_default: = Vector2(120000.0, 800.0)
 @export var jump_impulse: = 320
+@export var wall_jump_stength: = Vector2(160.0, 150.0)
 
 var acceleration: = acceleration_default
 var max_speed: = max_speed_default
@@ -32,8 +33,15 @@ func _ready() -> void:
 
 
 func unhandled_input(event: InputEvent) -> void:
-	if player.is_on_floor() and event.is_action_pressed("jump"):
-		_fsm.swap("Move/Air", {impulse = jump_impulse})
+	if event.is_action_pressed("jump"):
+		if player.is_on_floor():
+			_fsm.swap("Move/Air", {impulse = jump_impulse})
+		
+		elif player.can_wall_jump():
+			print(player.gfx.facing)
+			var jump_velocity: = Vector2(player.gfx.facing*1.0, -1.0) * wall_jump_stength
+			print(jump_velocity)
+			_fsm.swap("Move/Air", {velocity = jump_velocity, wall_jump = true})
 
 
 ## Note that this is NOT the callback, but is called by child states that need to move the player.

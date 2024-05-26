@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://odkwxubujcx6"]
+[gd_scene load_steps=12 format=3 uid="uid://odkwxubujcx6"]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_yejvu"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_fhpft"]
@@ -8,18 +8,17 @@
 [ext_resource type="Script" path="res://src/player/input/run.gd" id="6_v5xf6"]
 [ext_resource type="Script" path="res://src/player/input/air.gd" id="8_n05mw"]
 [ext_resource type="Script" path="res://src/player/input/wall.gd" id="8_ytelw"]
-[ext_resource type="PackedScene" uid="uid://c38s6bekms3g4" path="res://src/player/character_gfx.tscn" id="9_g5w1w"]
+[ext_resource type="PackedScene" uid="uid://cs0twjssppei0" path="res://assets/characters/player_ninja_gfx.tscn" id="9_tx8qp"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x5k21"]
-size = Vector2(10, 12)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6kxrm"]
+size = Vector2(4, 10)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i7666"]
+radius = 2.0
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 774
+collision_mask = 780
 script = ExtResource("1_yejvu")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -6)
-shape = SubResource("RectangleShape2D_x5k21")
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_fhpft")
@@ -27,6 +26,7 @@ initial_state = NodePath("Move/Idle")
 
 [node name="Move" type="Node" parent="States"]
 script = ExtResource("3_du6hi")
+wall_jump_stength = Vector2(160, 200)
 
 [node name="Idle" type="Node" parent="States/Move"]
 script = ExtResource("5_kgut2")
@@ -45,11 +45,26 @@ one_shot = true
 script = ExtResource("8_n05mw")
 acceleration_x = 160.0
 
-[node name="InputDelayTimer" type="Timer" parent="States/Move/Air"]
-
 [node name="Wall" type="Node" parent="States/Move"]
 script = ExtResource("8_ytelw")
 friction_factor = 1.0
 jump_strength = Vector2(160, 150)
 
-[node name="GFX" parent="." instance=ExtResource("9_g5w1w")]
+[node name="GFX" parent="." instance=ExtResource("9_tx8qp")]
+
+[node name="WallSearcher" type="Area2D" parent="GFX"]
+collision_layer = 0
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GFX/WallSearcher"]
+position = Vector2(7, 4)
+shape = SubResource("RectangleShape2D_6kxrm")
+debug_color = Color(0.993403, 0, 0.238118, 0.42)
+
+[node name="CameraAnchor" type="Area2D" parent="GFX"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GFX/CameraAnchor"]
+shape = SubResource("CircleShape2D_i7666")
+debug_color = Color(0.803878, 0.417465, 0, 0.42)

@@ -5,6 +5,18 @@ class_name FSM extends Node
 	set(value):
 		initial_state = value
 
+var is_active: = true:
+	set(value):
+		if value != is_active:
+			is_active = value
+			
+			if _active_state:
+				_set_process_state(_active_state, is_active)
+				if is_active:
+					_active_state.make_connections()
+				else:
+					_active_state.break_connections()
+
 
 var _active_state: FSMState = null:
 	set(value):
@@ -24,6 +36,9 @@ var _active_state: FSMState = null:
 
 func _ready() -> void:
 	assert(initial_state, "FSM %s does not have an initial state set!" % name)
+	
+	Events.room_entered.connect(_on_room_entered)
+	Events.room_entered_transition_finished.connect(_on_room_entered_transition_finished)
 
 
 ## (Re)start the FSM, setting the initial state as the active state.
@@ -56,3 +71,11 @@ func _set_process_state(state: FSMState, value: bool) -> void:
 	state.set_process_unhandled_input(value)
 	state.set_process(value)
 	state.set_physics_process(value)
+
+
+func _on_room_entered(_room: Room) -> void:
+	is_active = false
+
+
+func _on_room_entered_transition_finished() -> void:
+	is_active = true

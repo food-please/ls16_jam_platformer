@@ -3,8 +3,8 @@ extends FSMState
 @onready var move_state: = get_parent() as PlayerMoveState
 
 
-func _unhandled_input(_event: InputEvent) -> void:
-	move_state.unhandled_input(_event)
+func _unhandled_input(event: InputEvent) -> void:
+	move_state.unhandled_input(event)
 
 
 func _physics_process(_delta: float) -> void:

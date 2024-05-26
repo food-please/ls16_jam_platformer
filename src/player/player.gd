@@ -9,9 +9,12 @@ var is_active: = true:
 		if not is_inside_tree():
 			await ready
 		
-		collider.disabled = !is_active
+		gfx.disabled = !is_active
 
-@onready var collider: = $CollisionShape2D as CollisionShape2D
-#@onready var gfx: = $Sprite2D as AnimatedSprite2D
 @onready var gfx: = $GFX as CharacterGFX
 @onready var states: = $States as FSM
+@onready var wall_searcher: = $GFX/WallSearcher as Area2D
+
+
+func can_wall_jump() -> bool:
+	return wall_searcher.has_overlapping_bodies()
