@@ -3,13 +3,17 @@ extends FSMState
 @onready var move_state: = get_parent() as PlayerMoveState
 
 
+func _ready() -> void:
+	super._ready()
+	await move_state.ready
+	move_state.player.hurt.connect(_on_hurt)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	move_state.unhandled_input(event)
 	
-	#if event.is_action_pressed("dash") and Constants.can_player_dash:
-		#_fsm.swap("Move/Dash")
-	if event.is_action_pressed("dash"):
-		_fsm.swap("Hurt")
+	if event.is_action_pressed("dash") and Constants.can_player_dash:
+		_fsm.swap("Move/Dash")
 
 
 func _physics_process(delta: float) -> void:
@@ -32,3 +36,7 @@ func enter(data: = {}) -> void:
 # Clean up the state. E.g. reinitialize values like a timer.
 func exit() -> void:
 	move_state.exit()
+
+
+func _on_hurt() -> void:
+	_fsm.swap("Hurt")

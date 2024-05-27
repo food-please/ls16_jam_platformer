@@ -12,6 +12,12 @@ var _is_mid_dash: = false
 @onready var dash_timer: = $Timer as Timer
 
 
+func _ready() -> void:
+	super._ready()
+	await move_state.ready
+	move_state.player.hurt.connect(_on_hurt)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if move_state.player.is_on_floor() and event.is_action_pressed("jump"):
 		_fsm.swap("Move/Air", 
@@ -91,3 +97,7 @@ func _on_dash_timer_timeout() -> void:
 			_fsm.swap("Move/Idle")
 		else:
 			_fsm.swap("Move/Run")
+
+
+func _on_hurt() -> void:
+	_fsm.swap("Hurt")

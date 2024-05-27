@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://odkwxubujcx6"]
+[gd_scene load_steps=14 format=3 uid="uid://odkwxubujcx6"]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_yejvu"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_fhpft"]
@@ -16,6 +16,9 @@ size = Vector2(4, 10)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i7666"]
 radius = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2d4hy"]
+radius = 8.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 780
@@ -80,3 +83,11 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GFX/CameraAnchor"]
 shape = SubResource("CircleShape2D_i7666")
 debug_color = Color(0.803878, 0.417465, 0, 0.42)
+
+[node name="Hitbox" type="Area2D" parent="GFX"]
+collision_layer = 0
+collision_mask = 1024
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GFX/Hitbox"]
+shape = SubResource("CircleShape2D_2d4hy")
+debug_color = Color(0.882649, 0.000332872, 0.815662, 0.42)

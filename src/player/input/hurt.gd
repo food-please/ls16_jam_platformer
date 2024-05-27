@@ -57,7 +57,7 @@ func enter(_data: = {}) -> void:
 	print(player.gfx.facing, " ", move_direction.x)
 
 
-# Clean up the state. E.g. reinitialize values like a timer.
+# Clean up the state.
 func exit() -> void:
 	super.exit()
 
@@ -74,8 +74,13 @@ func calculate_velocity(old_velocity: Vector2, maximum_speed: Vector2, accel: Ve
 
 
 func _on_timer_timeout() -> void:
-	if player.is_on_floor():
-		_fsm.swap("Move/Idle")
+	if player.hitbox.has_overlapping_areas() or player.hitbox.has_overlapping_bodies():
+		player.velocity = initial_velocity * move_direction
+		timer.start()
 	
 	else:
-		_fsm.swap("Move/Air")
+		if player.is_on_floor():
+			_fsm.swap("Move/Idle")
+		
+		else:
+			_fsm.swap("Move/Air")

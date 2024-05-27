@@ -5,18 +5,21 @@ extends FSMState
 @onready var move_state: = get_parent() as PlayerMoveState
 
 
+func _ready() -> void:
+	super._ready()
+	await move_state.ready
+	move_state.player.hurt.connect(_on_hurt)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	move_state.unhandled_input(event)
-	
-	if event.is_action_pressed("dash"):
-		_fsm.swap("Hurt")
 
 
 func _physics_process(delta: float) -> void:
 	move_state.physics_process(delta)
 	
 	if move_state.player.velocity.y < 0.0:
-		move_state.player.gfx.play("air_jump")
+		move_state.player.gfx.play("air_jump") 
 	
 	else:
 		move_state.player.gfx.play("air_fall")
@@ -76,3 +79,7 @@ func _jump() -> void:
 		wall_jump = true
 	}
 	_fsm.swap("Move/Air", data)
+
+
+func _on_hurt() -> void:
+	_fsm.swap("Hurt")

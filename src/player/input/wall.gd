@@ -18,6 +18,8 @@ var _velocity: = Vector2.ZERO
 func _ready() -> void:
 	super._ready()
 	dust_timer.timeout.connect(_spawn_slide_dust)
+	await move_state.ready
+	move_state.player.hurt.connect(_on_hurt)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -89,3 +91,7 @@ func _spawn_slide_dust() -> void:
 		slide_dust.scale.x = move_state.player.gfx.scale.x
 		
 		dust_timer.start()
+
+
+func _on_hurt() -> void:
+	_fsm.swap("Hurt")
