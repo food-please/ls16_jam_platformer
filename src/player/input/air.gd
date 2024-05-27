@@ -7,6 +7,9 @@ extends FSMState
 
 func _unhandled_input(event: InputEvent) -> void:
 	move_state.unhandled_input(event)
+	
+	if event.is_action_pressed("dash"):
+		_fsm.swap("Hurt")
 
 
 func _physics_process(delta: float) -> void:

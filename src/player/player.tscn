@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://odkwxubujcx6"]
+[gd_scene load_steps=13 format=3 uid="uid://odkwxubujcx6"]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_yejvu"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_fhpft"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://src/player/input/run.gd" id="6_v5xf6"]
 [ext_resource type="Script" path="res://src/player/input/air.gd" id="8_n05mw"]
 [ext_resource type="Script" path="res://src/player/input/wall.gd" id="8_ytelw"]
+[ext_resource type="Script" path="res://src/player/input/hurt.gd" id="9_grw5x"]
 [ext_resource type="PackedScene" uid="uid://cs0twjssppei0" path="res://assets/characters/player_ninja_gfx.tscn" id="9_tx8qp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6kxrm"]
@@ -51,6 +52,14 @@ jump_strength = Vector2(140, 150)
 
 [node name="DustTimer" type="Timer" parent="States/Move/Wall"]
 wait_time = 0.6
+one_shot = true
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("9_grw5x")
+initial_velocity = Vector2(64, 128)
+
+[node name="Timer" type="Timer" parent="States/Hurt"]
+wait_time = 0.5
 one_shot = true
 
 [node name="GFX" parent="." instance=ExtResource("9_tx8qp")]
