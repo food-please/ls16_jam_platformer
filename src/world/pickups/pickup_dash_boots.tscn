@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://bo0jkea3vsyhf"]
+
+[ext_resource type="PackedScene" uid="uid://d0ml6cccolhyt" path="res://src/world/pickups/pickup.tscn" id="1_ky3fb"]
+[ext_resource type="Script" path="res://src/world/pickups/pickup_dash_boots.gd" id="2_m75om"]
+
+[sub_resource type="Animation" id="Animation_vo03q"]
+resource_name = "pickup"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fbsam"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_prxah"]
+_data = {
+"RESET": SubResource("Animation_fbsam"),
+"pickup": SubResource("Animation_vo03q")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rif6o"]
+radius = 8.0
+
+[node name="PickupDashBoots" instance=ExtResource("1_ky3fb")]
+script = ExtResource("2_m75om")
+
+[node name="AnimationPlayer" parent="." index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_prxah")
+}
+
+[node name="Label" type="Label" parent="." index="1"]
+offset_left = -24.0
+offset_top = -13.0
+offset_right = 21.0
+offset_bottom = 10.0
+text = "Boots"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
+shape = SubResource("CircleShape2D_rif6o")
+debug_color = Color(0.752271, 0.458056, 7.70092e-07, 0.42)

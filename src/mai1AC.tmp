@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://l42qglsb5kep"]
+[gd_scene load_steps=6 format=4 uid="uid://l42qglsb5kep"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_2wuim"]
 [ext_resource type="PackedScene" uid="uid://odkwxubujcx6" path="res://src/player/player.tscn" id="2_4nu2g"]
 [ext_resource type="TileSet" uid="uid://4us728o7keaj" path="res://assets/tiles/brick_tileset_background.tres" id="2_mdrw8"]
 [ext_resource type="PackedScene" uid="uid://dv4817bgqgwnx" path="res://src/world/world.tscn" id="3_sll4o"]
 [ext_resource type="Script" path="res://src/player/player_camera.gd" id="5_uiv0b"]
-[ext_resource type="Script" path="res://src/projectiles.gd" id="5_w1kxh"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_2wuim")
@@ -22,10 +21,9 @@ collision_enabled = false
 [node name="World" parent="." instance=ExtResource("3_sll4o")]
 
 [node name="Player" parent="." instance=ExtResource("2_4nu2g")]
-position = Vector2(38, 176)
+position = Vector2(426, 428)
 
 [node name="Projectiles" type="Node2D" parent="."]
-script = ExtResource("5_w1kxh")
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(103, -4)

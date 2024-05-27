@@ -6,7 +6,7 @@ extends FSMState
 func _unhandled_input(event: InputEvent) -> void:
 	move_state.unhandled_input(event)
 	
-	if event.is_action_pressed("dash"):
+	if event.is_action_pressed("dash") and Constants.can_player_dash:
 		_fsm.swap("Move/Dash")
 
 
@@ -16,7 +16,6 @@ func _physics_process(delta: float) -> void:
 			_fsm.swap("Move/Idle")
 	
 	else:
-		print("Air")
 		_fsm.swap("Move/Air")
 	move_state.physics_process(delta)
 

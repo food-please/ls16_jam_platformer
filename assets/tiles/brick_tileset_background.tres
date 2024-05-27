@@ -5,6 +5,9 @@
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mphc2"]
 texture = ExtResource("1_yq0ci")
 6:1/0 = 0
+7:1/0 = 0
+7:0/0 = 0
+6:0/0 = 0
 
 [resource]
 terrain_set_0/mode = 1

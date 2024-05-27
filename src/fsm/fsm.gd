@@ -37,8 +37,10 @@ var _active_state: FSMState = null:
 func _ready() -> void:
 	assert(initial_state, "FSM %s does not have an initial state set!" % name)
 	
+	Events.input_paused.connect(_pause_input)
+	Events.input_resumed.connect(_resume_input)
 	Events.room_entered.connect(_on_room_entered)
-	Events.room_entered_transition_finished.connect(_on_room_entered_transition_finished)
+	Events.room_entered_transition_finished.connect(_resume_input)
 
 
 ## (Re)start the FSM, setting the initial state as the active state.
@@ -53,6 +55,7 @@ func stop() -> void:
 
 ## Swaps out the active state, 
 func swap(state_path: String, data: = {}) -> void:
+	print("Going to ", state_path)
 	if not has_node(state_path):
 		printerr("%s::swap() error - state path '%s' is invalid." % [name, state_path])
 		return
@@ -74,8 +77,12 @@ func _set_process_state(state: FSMState, value: bool) -> void:
 
 
 func _on_room_entered(_room: Room) -> void:
+	_pause_input()
+
+
+func _pause_input() -> void:
 	is_active = false
 
 
-func _on_room_entered_transition_finished() -> void:
+func _resume_input() -> void:
 	is_active = true

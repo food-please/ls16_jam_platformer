@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=3 uid="uid://dd3dw0ekl4r7a"]
+
+[ext_resource type="Texture2D" uid="uid://dh7wnrwabj1ia" path="res://assets/characters/player_ninja.png" id="1_88jo1"]
+
+[sub_resource type="Animation" id="Animation_i6vku"]
+resource_name = "default"
+length = 0.3
+step = 0.075
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.075, 0.15, 0.225),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [28, 29, 30, 31]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_7qple"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [28]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6kiwy"]
+_data = {
+"RESET": SubResource("Animation_7qple"),
+"default": SubResource("Animation_i6vku")
+}
+
+[node name="DashDust" type="Node2D"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6kiwy")
+}
+autoplay = "default"
+speed_scale = 0.666
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_88jo1")
+offset = Vector2(0, -16)
+hframes = 63
+frame = 28

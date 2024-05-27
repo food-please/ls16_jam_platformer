@@ -1,8 +1,12 @@
 extends FSMState
 
+const DASH_DUST_SCENE: = preload("res://src/player/dash_dust.tscn")
+
 @export var max_speed_x: = 196.0
 
 var move_direction: = Vector2.ZERO
+
+var _is_mid_dash: = false
 
 @onready var move_state: = get_parent() as PlayerMoveState
 @onready var dash_timer: = $Timer as Timer
@@ -35,13 +39,23 @@ func enter(data: = {}) -> void:
 	move_state.player.velocity += _calculate_dash_velocity()
 	move_state.player.gfx.play("dash")
 	
+	var dash_dust: = DASH_DUST_SCENE.instantiate()
+	add_child(dash_dust)
+	Events.projectile_spawned.emit(dash_dust)
+	dash_dust.global_position = move_state.player.global_position
+	dash_dust.scale.x = move_state.player.gfx.scale.x
+	
 	if not dash_timer.timeout.is_connected(_on_dash_timer_timeout):
 		dash_timer.timeout.connect(_on_dash_timer_timeout)
 	dash_timer.start()
+	
+	_is_mid_dash = true
 
 
 # Clean up the state. E.g. reinitialize values like a timer.
 func exit() -> void:
+	_is_mid_dash = false
+	
 	if dash_timer.timeout.is_connected(_on_dash_timer_timeout):
 		dash_timer.timeout.disconnect(_on_dash_timer_timeout)
 	
@@ -49,6 +63,16 @@ func exit() -> void:
 	
 	move_state.max_speed = move_state.max_speed_default
 	move_state.exit()
+
+
+func make_connections() -> void:
+	super.make_connections()
+	
+	if _is_mid_dash and dash_timer.is_stopped():
+		if move_state.player.is_on_floor():
+			_fsm.swap("Move/Idle")
+		else:
+			_fsm.swap("Move/Air")
 
 
 func _calculate_dash_velocity() -> Vector2:
